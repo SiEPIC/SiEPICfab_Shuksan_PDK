@@ -1,1 +1,1 @@
-mklink /d %userprofile%\KLayout\salt\SiEPICfab_Shuksan_PDK %userprofile%\Documents\GitHub\SiEPICfab_Shuksan_PDK\SiEPICfab_Shuksan_PDK\klayout\siepic_shuksan_pdk\
+mklink /d %userprofile%\KLayout\salt\SiEPICfab_Shuksan_PDK %userprofile%\Documents\GitHub\SiEPICfab_Shuksan_PDK\SiEPICfab_Shuksan_PDK\klayout\siepicfab_shuksan_pdk\
