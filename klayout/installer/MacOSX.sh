@@ -16,10 +16,10 @@ export SRC=$HOME/Documents/GitHub
 export KLA=$HOME/.klayout
 export INTC1=$HOME/.config/Lumerical
 export INTC2=$HOME/.config
-export REPO=SiEPICfab_Shuksan_PDK/SiEPICfab_Shuksan_PDK
+export REPO=SiEPICfab_Shuksan_PDK
 
 mkdir -p $KLA/tech
-ln -sf $SRC/$REPO/klayout/siepicfab_shuksan_pdk/tech/siepicfab_shuksan_pdk/ $KLA/tech/SiEPICfab_Shuksan_PDK
+ln -sf $SRC/$REPO/klayout/tech/siepicfab_shuksan_pdk/ $KLA/tech/SiEPICfab_Shuksan_PDK
 
 mkdir -p $INTC1/Custom
 mkdir -p $INTC2/Custom
