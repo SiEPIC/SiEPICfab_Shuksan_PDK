@@ -19,7 +19,7 @@ export INTC2=$HOME/.config
 export REPO=SiEPICfab_Shuksan_PDK
 
 mkdir -p $KLA/tech
-ln -sf $SRC/$REPO/klayout/tech/siepicfab_shuksan_pdk/ $KLA/tech/SiEPICfab_Shuksan_PDK
+ln -sf $SRC/$REPO/klayout/tech/ $KLA/tech/SiEPICfab_Shuksan_PDK
 
 mkdir -p $INTC1/Custom
 mkdir -p $INTC2/Custom
