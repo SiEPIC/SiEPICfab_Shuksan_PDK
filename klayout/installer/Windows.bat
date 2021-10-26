@@ -30,3 +30,6 @@ if '%errorlevel%' NEQ '0' (
 :-------------------------------------- 
 
 mklink /d %userprofile%\KLayout\tech\SiEPICfab_Shuksan_PDK %userprofile%\Documents\GitHub\SiEPICfab_Shuksan_PDK\klayout\tech\siepicfab_shuksan_pdk\
+mklink /d %userprofile%\AppData\Roaming\Custom\SiEPIC_Shuksan_PDK %userprofile%\Documents\GitHub\SiEPICfab_Shuksan_PDK\lumerical_CML\SiEPIC_Shuksan_PDK\
+
+set /p Text= Hit Enter to continue...
