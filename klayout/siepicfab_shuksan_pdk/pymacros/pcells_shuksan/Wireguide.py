@@ -11,12 +11,12 @@ class Wireguide(pya.PCellDeclarationHelper):
     # declare the parameters
     from SiEPIC.utils import get_technology_by_name
     TECHNOLOGY = get_technology_by_name('SiEPICfab_Shuksan_PDK')
-    self.param("path", self.TypeShape, "Path", default = DPath([DPoint(0,0), DPoint(10,0), DPoint(10,10)], 0.5))
+    self.param("path", self.TypeShape, "Path", default = DPath([DPoint(0,0), DPoint(15,0), DPoint(15,15)], 5))
     self.radius = 0
-    self.param("width", self.TypeDouble, "Width", default = 0.5)
+    self.param("width", self.TypeDouble, "Width", default = 5)
     self.adiab = False
-    self.param("layers", self.TypeList, "Layers", default = ['Waveguide'])
-    self.param("widths", self.TypeList, "Widths", default =  [0.5])
+    self.param("layers", self.TypeList, "Layers", default = ['M2_router'])
+    self.param("widths", self.TypeList, "Widths", default =  [5])
     self.param("offsets", self.TypeList, "Offsets", default = [0])
    
   def display_text_impl(self):
