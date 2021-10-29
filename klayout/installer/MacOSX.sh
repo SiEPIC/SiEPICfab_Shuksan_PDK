@@ -1,7 +1,6 @@
 #!/bin/bash
 # OSX GitHub repository installation of SiEPICfab-Grouse PDK for KLayout and Lumerical INTERCONNECT
 
-
 # to run:
 # source MacOSX.sh
 
@@ -19,6 +18,7 @@ export INTC2=$HOME/.config
 export REPO=SiEPICfab_Shuksan_PDK
 
 mkdir -p $KLA/tech
+rm -rf $KLA/tech/SiEPICfab_Shuksan_PDK
 ln -sf $SRC/$REPO/klayout/siepicfab_shuksan_pdk/ $KLA/tech/SiEPICfab_Shuksan_PDK
 
 mkdir -p $INTC1/Custom
