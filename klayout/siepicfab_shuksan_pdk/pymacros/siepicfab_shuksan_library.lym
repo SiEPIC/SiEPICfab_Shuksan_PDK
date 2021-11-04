@@ -77,7 +77,7 @@ class SiEPICfab_Shuksan_Library(Library):
     print("Initializing '%s' Library." % library)
 
     # Set the description
-    self.description = "v0.1.0, Components with models"
+    self.description = "v0.1.1, Components with models"
 
                 
     # Import all the GDS files from the tech folder
