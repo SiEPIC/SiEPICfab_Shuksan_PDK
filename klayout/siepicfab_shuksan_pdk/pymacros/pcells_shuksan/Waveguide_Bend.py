@@ -109,7 +109,7 @@ class Waveguide_Bend(pya.PCellDeclarationHelper):
     shape = shapes(LayerDevRecN).insert(text)
     shape.text_size = r/100
     t = Trans(Trans.R0, x+r/10, r/4)
-    text = Text ('Component=waveguide_bend', t)
+    text = Text ('Component=wg_strip_o_350', t)
     shape = shapes(LayerDevRecN).insert(text)
     shape.text_size = r/100
     t = Trans(Trans.R0, x+r/10, r/2)

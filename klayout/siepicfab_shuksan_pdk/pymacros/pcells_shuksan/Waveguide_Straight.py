@@ -89,7 +89,7 @@ class Waveguide_Straight(pya.PCellDeclarationHelper):
     shape = shapes(LayerDevRecN).insert(text)
     shape.text_size = 0.1/dbu
     t = Trans(Trans.R0,length/10, 0)
-    text = Text ('Lumerical_INTERCONNECT_component=waveguide_straight', t)
+    text = Text ('Lumerical_INTERCONNECT_component=wg_strip_o_350', t)
     shape = shapes(LayerDevRecN).insert(text)
     shape.text_size = 0.1/dbu
     t = Trans(Trans.R0,length/9, 0)

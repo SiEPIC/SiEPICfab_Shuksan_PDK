@@ -120,7 +120,7 @@ class Waveguide(pya.PCellDeclarationHelper):
     text.halign=halign
     shape = self.cell.shapes(LayerDevRecN).insert(text)
     t = Trans(angle, False, pt3) 
-    text = Text ('Lumerical_INTERCONNECT_library=Design kits/%s' % self.CML, t, 0.1*wg_width, -1)
+    text = Text ('Lumerical_INTERCONNECT_library=Custom/%s' % self.CML, t, 0.1*wg_width, -1)
     text.halign=halign
     shape = self.cell.shapes(LayerDevRecN).insert(text)
     t = Trans(angle, False, pt2)
