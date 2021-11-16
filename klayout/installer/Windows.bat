@@ -1,5 +1,15 @@
 @echo off
 
+REM This batch file is an installer for SiEPICfab Shuksan PDK in KLayout\tech\SiEPICfab_Shuksan_PDK
+REM This file assumes that 
+REM - The SiEPICfab_Shuksan_PDK repository is installed (cloned) in (you)/Documents/GitHub
+REM - That the KLAYOUT configuration file is (you)/klayout
+REM - That the Lumerical INTERCONNECT Custom library folder is in one of:
+REM   - (you)/AppData/Roaming/Lumerical/Custom
+REM   - (you)/AppData/Roaming/Custom
+REM Note that AppData is a hidden windows directory
+REM Reset the INTERCONNECT "Custom" library directory and re-run this script if you still can't see the library in INTERCONNECT
+
 :: BatchGotAdmin
 :-------------------------------------
 REM  --> Check for permissions
