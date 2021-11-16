@@ -40,6 +40,8 @@ usage:
 tech = "SiEPICfab_Shuksan_PDK"
 waveguide_type='Strip TE 1310 nm, w=350 nm'
 wavelength='1270'
+pad_pitch = 125000
+metal_width = 20000
 
 if SiEPIC.__version__ &lt; '0.3.70':
     raise Exception("Errors", "This example requires SiEPIC-Tools version 0.3.70 or greater.")
@@ -57,44 +59,87 @@ ly.prune_subcells(top_cell.cell_index(), 10)
 ly.clear_layer(ly.layer(TECHNOLOGY['Text']))
 
 # load the cells from the PDK
+cell_laser = ly.create_cell('laser_1270nm_DFB', tech)
 cell_gc = ly.create_cell('GC_%s_TE_8deg' % wavelength, tech)
 cell_y = ly.create_cell('y_splitter_1310', tech)
 cell_splitter = ly.create_cell('splitter_2x2_1310', tech)
+cell_fibrearray = ly.create_cell('pwb_8ch_array', tech)
+cell_heater = ly.create_cell('wg_heater', tech)
+cell_pad = ly.create_cell('BondPad', tech)
 
+
+if not cell_laser:
+    raise Exception ('Cannot load laser cell; please check the script carefully.')
 if not cell_gc:
     raise Exception ('Cannot load grating coupler cell; please check the script carefully.')
 if not cell_y:
     raise Exception ('Cannot load 1x2 splitter cell; please check the script carefully.')
 if not cell_splitter:
     raise Exception ('Cannot load 2x2 splitter cell; please check the script carefully.')
+if not cell_fibrearray:
+    raise Exception ('Cannot load fibre array cell; please check the script carefully.')
+if not cell_heater:
+    raise Exception ('Cannot load waveguide heater cell; please check the script carefully.')
+if not cell_pad:
+    raise Exception ('Cannot load bond pad cell; please check the script carefully.')
 
 
-# grating couplers, place at absolute positions
-t = pya.Trans.from_s('r0 0,0')
-instGC1 = cell.insert(pya.CellInstArray(cell_gc.cell_index(), t))
-t = pya.Trans.from_s('r0 0,127000')
-instGC2 = cell.insert(pya.CellInstArray(cell_gc.cell_index(), t))
+# laser, place at absolute positions
+t = pya.Trans.from_s('r0 1200000,1000000')
+inst_laser = cell.insert(pya.CellInstArray(cell_laser.cell_index(), t))
+t = pya.Trans.from_s('r270 1000000,5000000')
+inst_fa= cell.insert(pya.CellInstArray(cell_fibrearray.cell_index(), t))
 
-# automated test / simulation label
-text = pya.Text ("opt_in_TE_1310_device_MZI_script", t)
-cell.shapes(ly.layer(TECHNOLOGY['Text'])).insert(text).text_size = 5/ly.dbu
-
-# Y branches:
-# Version 1: place it at an absolute position:
-t = pya.Trans.from_s('r0 60000,0')
+# Y branch:
+# Approach 1: place it at an absolute position:
+t = pya.Trans.from_s('r90 1400000,3000000')
 instY1 = cell.insert(pya.CellInstArray(cell_y.cell_index(), t))
 
-# Version 2: attach it to an existing component, then move relative
-instY2 = connect_cell(instGC2, 'opt1', cell_y, 'opt1')
-instY2.transform(Trans(60000,-30000))
+# Heaters
+# Approach 2: attach it to an existing component, then move relative
+inst_heater1 = connect_cell(instY1, 'opt2', cell_heater, 'opt1')
+inst_heater1.transform(Trans(-100000,250000))
+inst_heater2 = connect_cell(instY1, 'opt3', cell_heater, 'opt1')
+inst_heater2.transform(Trans(100000,20000))
+
+# 2x2 splitter:
+# Approach 2: attach it to an existing component, then move relative
+instSplit = connect_cell(inst_heater1, 'opt2', cell_splitter, 'opt1')
+instSplit.transform(Trans(60000,40000))
 
 # Waveguides:
-connect_pins_with_waveguide(instGC1, 'opt1', instY1, 'opt1', waveguide_type=waveguide_type)
-connect_pins_with_waveguide(instGC2, 'opt1', instY2, 'opt1', waveguide_type=waveguide_type)
-connect_pins_with_waveguide(instY1, 'opt2', instY2, 'opt3', waveguide_type=waveguide_type)
-connect_pins_with_waveguide(instY1, 'opt3', instY2, 'opt2', 
-#    waveguide_type=waveguide_type, turtle_B=[35,-90])
-    waveguide_type=waveguide_type, turtle_B=[35,-90, 20,90, 20,-90, 20,90, 20,-90], turtle_A=[35,90, 20,-90, 20,90])
+connect_pins_with_waveguide(inst_laser, 'opt1', instY1, 'opt1', waveguide_type=waveguide_type)
+connect_pins_with_waveguide(inst_fa, 'opt1', instSplit, 'opt4', waveguide_type=waveguide_type, turtle_A=[70,-90,10,90])
+connect_pins_with_waveguide(inst_fa, 'opt2', instSplit, 'opt3', waveguide_type=waveguide_type, turtle_A=[50,-90,10,90])
+connect_pins_with_waveguide(instY1, 'opt2', inst_heater1, 'opt1', waveguide_type=waveguide_type, turtle_A=[10,90,10,-90])
+connect_pins_with_waveguide(instY1, 'opt3', inst_heater2, 'opt1', waveguide_type=waveguide_type)
+connect_pins_with_waveguide(inst_heater1, 'opt2', instSplit, 'opt1', waveguide_type=waveguide_type, turtle_B=[10,-90,10,90])
+connect_pins_with_waveguide(inst_heater2, 'opt2', instSplit, 'opt2', waveguide_type=waveguide_type, turtle_B=[10,90,10,-90])
+
+# Bond Pads
+inst_pads = []
+for i in range(0,6):
+    t = pya.Trans.from_s('r0 100000,%s' % (3e6+pad_pitch*i))
+    inst_pad= cell.insert(pya.CellInstArray(cell_pad.cell_index(), t))
+    inst_pads.append(inst_pad)
+
+
+# Metal wires for laser
+path = Path([
+        Point(inst_pads[0].pinPoint('m_pin_right').x, inst_pads[0].pinPoint('m_pin_right').y), 
+        Point(inst_pads[0].pinPoint('m_pin_right').x+metal_width, inst_pads[0].pinPoint('m_pin_right').y), 
+        Point(inst_pads[0].pinPoint('m_pin_right').x+metal_width, inst_laser.pinPoint('elec1_P').y), 
+        Point(inst_laser.pinPoint('elec1_P').x, inst_laser.pinPoint('elec1_P').y), ], 
+        metal_width)
+cell.shapes(ly.layer(TECHNOLOGY['M2_router'])).insert(path)
+path = Path([
+        Point(inst_pads[1].pinPoint('m_pin_right').x, inst_pads[1].pinPoint('m_pin_right').y), 
+        Point(inst_pads[1].pinPoint('m_pin_right').x+metal_width*3, inst_pads[1].pinPoint('m_pin_right').y), 
+        Point(inst_pads[1].pinPoint('m_pin_right').x+metal_width*3, inst_laser.pinPoint('elec2_n').y), 
+        Point(inst_laser.pinPoint('elec2_n').x, inst_laser.pinPoint('elec2_n').y), ], 
+        metal_width)
+cell.shapes(ly.layer(TECHNOLOGY['M2_router'])).insert(path)
+
 
 # Zoom out
 lv.clear_object_selection()
