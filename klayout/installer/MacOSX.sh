@@ -23,8 +23,8 @@ ln -sf $SRC/$REPO/klayout/siepicfab_shuksan_pdk/ $KLA/tech/SiEPICfab_Shuksan_PDK
 
 mkdir -p $INTC1/Custom
 mkdir -p $INTC2/Custom
-ln -sf $SRC/$REPO/lumerical_CML/SiEPIC_Shuksan_PDK/ $INTC1/Custom
-ln -sf $SRC/$REPO/lumerical_CML/SiEPIC_Shuksan_PDK/ $INTC2/Custom
+ln -sf $SRC/$REPO/lumerical_CML/SiEPICfab_Shuksan_PDK/ $INTC1/Custom
+ln -sf $SRC/$REPO/lumerical_CML/SiEPICfab_Shuksan_PDK/ $INTC2/Custom
 
 echo "If there are no errors above, then SiEPICfab_Shuksan_PDK has been installed, for KLayout and Lumerical INTERCONNECT. Please restart KLayout."
 

@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<klayout-macro>
+ <description>MZI, GCs</description>
+ <version/>
+ <category>pymacros</category>
+ <prolog/>
+ <epilog/>
+ <doc/>
+ <autorun>false</autorun>
+ <autorun-early>false</autorun-early>
+ <shortcut/>
+ <show-in-menu>true</show-in-menu>
+ <group-name/>
+ <menu-path>siepic_menu.exlayout.begin</menu-path>
+ <interpreter>python</interpreter>
+ <dsl-interpreter-name/>
+ <text>'''
+Example simple script to create a layout:
+
+DFB Laser integrated with Photonic Wire Bonds
+Thermally Tunable Mach-Zehnder Interferometer
+Fibre Array attached using Photonic Wire Bonds
+
+by Lukas Chrostowski, 2021
+
+using SiEPIC-Tools
+with functions introduced in v0.3.70, 
+specifically connect_pins_with_waveguide and connect_cell
+
+For more information on scripting:
+  https://github.com/SiEPIC/SiEPIC-Tools/wiki/Scripted-Layout
+  
+usage:
+ - create a blank layout using the technology "SiEPICfab_Shuksan_PDK"
+ - run this script
+'''
+
+# Lasers are defined in DFT.XML (Design For Test)
+
+tech = "SiEPICfab_Shuksan_PDK"
+waveguide_type='Strip TE 1310 nm, w=350 nm'
+wavelength='1270'
+
+if SiEPIC.__version__ &lt; '0.3.70':
+    raise Exception("Errors", "This example requires SiEPIC-Tools version 0.3.70 or greater.")
+
+from SiEPIC import scripts  
+from SiEPIC.utils import get_layout_variables
+TECHNOLOGY, lv, ly, cell = get_layout_variables()
+if TECHNOLOGY['technology_name'] not in tech:
+    raise Exception ('This example needs to be executed in a layout with Technology = %s' % tech)
+from SiEPIC.scripts import connect_pins_with_waveguide, connect_cell
+
+# delete all cells and text within the present cell
+top_cell = ly.top_cells()[0]
+ly.prune_subcells(top_cell.cell_index(), 10)
+ly.clear_layer(ly.layer(TECHNOLOGY['Text']))
+
+# load the cells from the PDK
+cell_gc = ly.create_cell('GC_%s_TE_8deg' % wavelength, tech)
+cell_y = ly.create_cell('y_splitter_1310', tech)
+cell_splitter = ly.create_cell('splitter_2x2_1310', tech)
+
+if not cell_gc:
+    raise Exception ('Cannot load grating coupler cell; please check the script carefully.')
+if not cell_y:
+    raise Exception ('Cannot load 1x2 splitter cell; please check the script carefully.')
+if not cell_splitter:
+    raise Exception ('Cannot load 2x2 splitter cell; please check the script carefully.')
+
+
+# grating couplers, place at absolute positions
+t = pya.Trans.from_s('r0 0,0')
+instGC1 = cell.insert(pya.CellInstArray(cell_gc.cell_index(), t))
+t = pya.Trans.from_s('r0 0,127000')
+instGC2 = cell.insert(pya.CellInstArray(cell_gc.cell_index(), t))
+
+# automated test / simulation label
+text = pya.Text ("opt_in_TE_1310_device_MZI_script", t)
+cell.shapes(ly.layer(TECHNOLOGY['Text'])).insert(text).text_size = 5/ly.dbu
+
+# Y branches:
+# Version 1: place it at an absolute position:
+t = pya.Trans.from_s('r0 60000,0')
+instY1 = cell.insert(pya.CellInstArray(cell_y.cell_index(), t))
+
+# Version 2: attach it to an existing component, then move relative
+instY2 = connect_cell(instGC2, 'opt1', cell_y, 'opt1')
+instY2.transform(Trans(60000,-30000))
+
+# Waveguides:
+connect_pins_with_waveguide(instGC1, 'opt1', instY1, 'opt1', waveguide_type=waveguide_type)
+connect_pins_with_waveguide(instGC2, 'opt1', instY2, 'opt1', waveguide_type=waveguide_type)
+connect_pins_with_waveguide(instY1, 'opt2', instY2, 'opt3', waveguide_type=waveguide_type)
+connect_pins_with_waveguide(instY1, 'opt3', instY2, 'opt2', 
+#    waveguide_type=waveguide_type, turtle_B=[35,-90])
+    waveguide_type=waveguide_type, turtle_B=[35,-90, 20,90, 20,-90, 20,90, 20,-90], turtle_A=[35,90, 20,-90, 20,90])
+
+# Zoom out
+lv.clear_object_selection()
+lv.zoom_fit()
+lv.max_hier()
+</text>
+</klayout-macro>
