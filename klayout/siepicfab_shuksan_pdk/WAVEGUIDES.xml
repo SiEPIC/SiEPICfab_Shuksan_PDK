@@ -23,7 +23,7 @@
 	<waveguide>
 	  <name>Multimode Strip TE 1310 nm, w=2000 nm</name>
 	  <CML>SiEPICfab_Shuksan_PDK</CML>
-	  <model>wg_strip_o_2000</model>
+	  <model>wg_strip_o_mm_2000</model>
 	  <bezier>0.20</bezier>
       <radius>300.0</radius>
       <width>2.0</width>
