@@ -32,10 +32,10 @@ if '%errorlevel%' NEQ '0' (
 mklink /d %userprofile%\KLayout\tech\SiEPICfab_Shuksan_PDK %userprofile%\Documents\GitHub\SiEPICfab_Shuksan_PDK\klayout\siepicfab_shuksan_pdk\
 (call)
 
-mklink /d %userprofile%\AppData\Roaming\Custom\SiEPIC_Shuksan_PDK %userprofile%\Documents\GitHub\SiEPICfab_Shuksan_PDK\lumerical_CML\SiEPIC_Shuksan_PDK\
+mklink /d %userprofile%\AppData\Roaming\Custom\SiEPICfab_Shuksan_PDK %userprofile%\Documents\GitHub\SiEPICfab_Shuksan_PDK\lumerical_CML\SiEPICfab_Shuksan_PDK\
 
 if %errorlevel% NEQ 0 (
-    mklink /d %userprofile%\AppData\Roaming\Lumerical\Custom\SiEPIC_Shuksan_PDK %userprofile%\Documents\GitHub\SiEPICfab_Shuksan_PDK\lumerical_CML\SiEPIC_Shuksan_PDK\
+    mklink /d %userprofile%\AppData\Roaming\Lumerical\Custom\SiEPICfab_Shuksan_PDK %userprofile%\Documents\GitHub\SiEPICfab_Shuksan_PDK\lumerical_CML\SiEPICfab_Shuksan_PDK\
 )
 
 set /p Text= Hit Enter to continue...
