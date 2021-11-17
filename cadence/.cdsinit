@@ -1,0 +1,29 @@
+;**************************************************************************
+; This is the .cdsinit file for Cadence-Interconnect integration.
+; The installation script determines the INTERCONNECT installation directory and updates this file as necessary
+; If INTERCONNECT is not installed in the default directory, the user must define the environment shell variable 
+; "INTERCONNECT_HOME" as the INTERCONNECT installation home directory before running Virtuoso.
+;**************************************************************************
+;**************************************************************************
+
+; Define the OASIS classes and methods
+asiAnalogAutoloadProc()
+loadContext(prependInstallPath("etc/context/asimenv.cxt"))
+
+; set INTERCONNECT_HOME environment variable to Lumerical installation
+setShellEnvVar("INTERCONNECT_HOME" "/CMC/tools/lumerical/v211")
+
+; Get INTERCONNECT_HOME environment variable for INTERCONNECT integration
+let( (INTERCONNECTHOME)
+     INTERCONNECTHOME = getShellEnvVar("LMLHOME") || getShellEnvVar("INTERCONNECT_HOME") 
+     if( isDir(INTERCONNECTHOME)
+         then
+                load(strcat(INTERCONNECTHOME "/interfaces/cadence/virtuoso/INTERCONNECT.ini"))
+                loadContext(strcat(INTERCONNECTHOME "/interfaces/cadence/virtuoso/INTERCONNECT.cxt") t)
+                callInitProc("INTERCONNECT")
+         else
+                fprintf(stdout "*** ERROR *** Could not locate the directory for INTERCONNECT integration.\n")
+       )
+     t
+)
+
