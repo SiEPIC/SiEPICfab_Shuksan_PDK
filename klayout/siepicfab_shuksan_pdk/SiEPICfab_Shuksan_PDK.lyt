@@ -209,6 +209,7 @@ var thick_m2 = 0.7
 
 99/0:	zstart = 0,	height = z_start #dummy BOX layer to remove 2.5d visual viewer annoying grid
 1/0:	zstart = z_start,	height = thick_si	# Si strip waveguide
+10/0:	zstart = z_start,	height = thick_si	# blackbox dummy representation
 11/0:	zstart = z_start+thick_si+vspace_si_m1,	height = thick_m1	# M1 metal
 12/0:	zstart = z_start+thick_si+vspace_si_m1+thick_m1+vspace_m1_m2,	height = thick_m2	# M2 metal
 </src>
