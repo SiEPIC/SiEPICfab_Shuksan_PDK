@@ -35,17 +35,17 @@ usage:
  - run this script
 '''
 
-# Lasers are defined in DFT.XML (Design For Test)
-
+# Configuration for the script
 tech = "SiEPICfab_Shuksan_PDK"
 waveguide_type='Strip TE 1310 nm, w=350 nm'
 wavelength='1270'
 pad_pitch = 125000
 metal_width = 20000
+metal_width_laser = 50000
 
+# SiEPIC-Tools initialization
 if SiEPIC.__version__ &lt; '0.3.70':
     raise Exception("Errors", "This example requires SiEPIC-Tools version 0.3.70 or greater.")
-
 from SiEPIC import scripts  
 from SiEPIC.utils import get_layout_variables
 TECHNOLOGY, lv, ly, cell = get_layout_variables()
@@ -57,21 +57,24 @@ from SiEPIC.scripts import connect_pins_with_waveguide, connect_cell
 top_cell = ly.top_cells()[0]
 ly.prune_subcells(top_cell.cell_index(), 10)
 ly.clear_layer(ly.layer(TECHNOLOGY['Text']))
+ly.clear_layer(ly.layer(TECHNOLOGY['M2_router']))
+ly.clear_layer(ly.layer(TECHNOLOGY['FloorPlan']))
+top_cell.name = 'Example_Laser_MZI_FA'
+
+# Floorplan
+box = Box( Point(-2500000, -2500000), Point(2500000, 2500000) )
+cell.shapes(ly.layer(TECHNOLOGY['FloorPlan'])).insert(box)
 
 # load the cells from the PDK
 cell_laser = ly.create_cell('laser_1270nm_DFB', tech)
-cell_gc = ly.create_cell('GC_%s_TE_8deg' % wavelength, tech)
 cell_y = ly.create_cell('y_splitter_1310', tech)
 cell_splitter = ly.create_cell('splitter_2x2_1310', tech)
 cell_fibrearray = ly.create_cell('pwb_8ch_array', tech)
 cell_heater = ly.create_cell('wg_heater', tech)
 cell_pad = ly.create_cell('BondPad', tech)
 
-
 if not cell_laser:
     raise Exception ('Cannot load laser cell; please check the script carefully.')
-if not cell_gc:
-    raise Exception ('Cannot load grating coupler cell; please check the script carefully.')
 if not cell_y:
     raise Exception ('Cannot load 1x2 splitter cell; please check the script carefully.')
 if not cell_splitter:
@@ -85,27 +88,27 @@ if not cell_pad:
 
 
 # laser, place at absolute positions
-t = pya.Trans.from_s('r0 1200000,1000000')
+t = pya.Trans.from_s('r90 -300000,-1100000')
 inst_laser = cell.insert(pya.CellInstArray(cell_laser.cell_index(), t))
-t = pya.Trans.from_s('r270 1000000,5000000')
+t = pya.Trans.from_s('r270 -500000,2500000')
 inst_fa= cell.insert(pya.CellInstArray(cell_fibrearray.cell_index(), t))
 
 # Y branch:
-# Approach 1: place it at an absolute position:
-t = pya.Trans.from_s('r90 1400000,3000000')
-instY1 = cell.insert(pya.CellInstArray(cell_y.cell_index(), t))
+# Approach: attach it to an existing component, then move relative
+instY1 = connect_cell(inst_laser, 'opt1', cell_y, 'opt1')
+instY1.transform(Trans(0,1000000))
 
 # Heaters
-# Approach 2: attach it to an existing component, then move relative
+# Approach: attach it to an existing component, then move relative
 inst_heater1 = connect_cell(instY1, 'opt2', cell_heater, 'opt1')
-inst_heater1.transform(Trans(-100000,250000))
+inst_heater1.transform(Trans(-20000,250000))
 inst_heater2 = connect_cell(instY1, 'opt3', cell_heater, 'opt1')
 inst_heater2.transform(Trans(100000,20000))
 
 # 2x2 splitter:
 # Approach 2: attach it to an existing component, then move relative
 instSplit = connect_cell(inst_heater1, 'opt2', cell_splitter, 'opt1')
-instSplit.transform(Trans(60000,40000))
+instSplit.transform(Trans(20000,40000))
 
 # Waveguides:
 connect_pins_with_waveguide(inst_laser, 'opt1', instY1, 'opt1', waveguide_type=waveguide_type)
@@ -119,7 +122,7 @@ connect_pins_with_waveguide(inst_heater2, 'opt2', instSplit, 'opt2', waveguide_t
 # Bond Pads
 inst_pads = []
 for i in range(0,6):
-    t = pya.Trans.from_s('r0 100000,%s' % (3e6+pad_pitch*i))
+    t = pya.Trans.from_s('r0 -2400000,%s' % (-1.5e6+pad_pitch*i))
     inst_pad= cell.insert(pya.CellInstArray(cell_pad.cell_index(), t))
     inst_pads.append(inst_pad)
 
@@ -127,23 +130,62 @@ for i in range(0,6):
 # Metal wires for laser
 path = Path([
         Point(inst_pads[0].pinPoint('m_pin_right').x, inst_pads[0].pinPoint('m_pin_right').y), 
-        Point(inst_pads[0].pinPoint('m_pin_right').x+metal_width, inst_pads[0].pinPoint('m_pin_right').y), 
-        Point(inst_pads[0].pinPoint('m_pin_right').x+metal_width, inst_laser.pinPoint('elec1_P').y), 
-        Point(inst_laser.pinPoint('elec1_P').x, inst_laser.pinPoint('elec1_P').y), ], 
-        metal_width)
+        Point(inst_pads[0].pinPoint('m_pin_right').x+metal_width_laser, inst_pads[0].pinPoint('m_pin_right').y), 
+        Point(inst_pads[0].pinPoint('m_pin_right').x+metal_width_laser, inst_laser.pinPoint('elec1_p').y-metal_width_laser*3), 
+        Point(inst_laser.pinPoint('elec1_p').x, inst_laser.pinPoint('elec1_p').y - metal_width_laser*3), 
+        Point(inst_laser.pinPoint('elec1_p').x, inst_laser.pinPoint('elec1_p').y), ], 
+        metal_width_laser)
 cell.shapes(ly.layer(TECHNOLOGY['M2_router'])).insert(path)
 path = Path([
         Point(inst_pads[1].pinPoint('m_pin_right').x, inst_pads[1].pinPoint('m_pin_right').y), 
-        Point(inst_pads[1].pinPoint('m_pin_right').x+metal_width*3, inst_pads[1].pinPoint('m_pin_right').y), 
-        Point(inst_pads[1].pinPoint('m_pin_right').x+metal_width*3, inst_laser.pinPoint('elec2_n').y), 
+        Point(inst_pads[1].pinPoint('m_pin_right').x+metal_width_laser*3, inst_pads[1].pinPoint('m_pin_right').y), 
+        Point(inst_pads[1].pinPoint('m_pin_right').x+metal_width_laser*3, inst_laser.pinPoint('elec2_n').y-metal_width_laser), 
+        Point(inst_laser.pinPoint('elec2_n').x, inst_laser.pinPoint('elec2_n').y-metal_width_laser),
         Point(inst_laser.pinPoint('elec2_n').x, inst_laser.pinPoint('elec2_n').y), ], 
+        metal_width_laser)
+cell.shapes(ly.layer(TECHNOLOGY['M2_router'])).insert(path)
+
+# Metal wires for heater
+path = Path([
+        Point(inst_pads[2].pinPoint('m_pin_right').x, inst_pads[2].pinPoint('m_pin_right').y), 
+        Point(inst_pads[2].pinPoint('m_pin_right').x+metal_width*7, inst_pads[2].pinPoint('m_pin_right').y), 
+        Point(inst_pads[2].pinPoint('m_pin_right').x+metal_width*7, inst_heater2.pinPoint('m_pin1').y), 
+        Point(inst_heater2.pinPoint('m_pin1').x, inst_heater2.pinPoint('m_pin1').y), ], 
         metal_width)
 cell.shapes(ly.layer(TECHNOLOGY['M2_router'])).insert(path)
+path = Path([
+        Point(inst_pads[3].pinPoint('m_pin_right').x, inst_pads[3].pinPoint('m_pin_right').y), 
+        Point(inst_pads[3].pinPoint('m_pin_right').x+metal_width*5, inst_pads[3].pinPoint('m_pin_right').y), 
+        Point(inst_pads[3].pinPoint('m_pin_right').x+metal_width*5, inst_heater2.pinPoint('m_pin2').y), 
+        Point(inst_heater2.pinPoint('m_pin2').x, inst_heater2.pinPoint('m_pin2').y), ], 
+        metal_width)
+cell.shapes(ly.layer(TECHNOLOGY['M2_router'])).insert(path)
+path = Path([
+        Point(inst_pads[4].pinPoint('m_pin_right').x, inst_pads[4].pinPoint('m_pin_right').y), 
+        Point(inst_pads[4].pinPoint('m_pin_right').x+metal_width*3, inst_pads[4].pinPoint('m_pin_right').y), 
+        Point(inst_pads[4].pinPoint('m_pin_right').x+metal_width*3, inst_heater1.pinPoint('m_pin1').y), 
+        Point(inst_heater1.pinPoint('m_pin1').x, inst_heater1.pinPoint('m_pin1').y), ], 
+        metal_width)
+cell.shapes(ly.layer(TECHNOLOGY['M2_router'])).insert(path)
+path = Path([
+        Point(inst_pads[5].pinPoint('m_pin_right').x, inst_pads[5].pinPoint('m_pin_right').y), 
+        Point(inst_pads[5].pinPoint('m_pin_right').x+metal_width, inst_pads[5].pinPoint('m_pin_right').y), 
+        Point(inst_pads[5].pinPoint('m_pin_right').x+metal_width, inst_heater1.pinPoint('m_pin2').y), 
+        Point(inst_heater1.pinPoint('m_pin2').x, inst_heater1.pinPoint('m_pin2').y), ], 
+        metal_width)
+cell.shapes(ly.layer(TECHNOLOGY['M2_router'])).insert(path)
+
 
 
 # Zoom out
 lv.clear_object_selection()
 lv.zoom_fit()
 lv.max_hier()
+
+# Save a screenshot of the layout:
+import os
+dir_path = os.path.join(os.path.dirname(os.path.realpath(__file__)), 
+    cell.name+'.png')
+lv.save_screenshot(dir_path)
 </text>
 </klayout-macro>
