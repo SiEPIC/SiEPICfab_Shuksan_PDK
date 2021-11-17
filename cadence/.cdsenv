@@ -1,0 +1,47 @@
+xpcell	disableProliferationMsg	boolean	t
+ddserv	showWhatsNew	string	"6.1.7"
+
+
+; works better (focus tracks the cursor) with the new palette....
+ui      	sessionFocusPolicy      cyclic  "CanvasAsstDelay"
+ui      	canvasFocusDelay        int     0
+ui		ciwCmdInputLines	int 	10
+
+cdsLibManager.main	showCategoriesOn	boolean	t
+
+
+; Layout L/XL stuff
+layoutXL                initIOLabelType                         string "Text Display"
+layoutXL                initIOPinLayer                          string "M1_heater"
+layoutXL		initCreateBoundary			boolean nil
+layoutXL		phoPinLayer			        string "waveguide"
+layoutXL                phoPinWidth                             float 0.35
+;layoutXL		photonicAbutNonPcells			boolean t
+;layoutXL        	ciwWindow       			string  "((553.0 25.0) (1348.0 496.0))"
+layoutXL                chainIncremental                        boolean t
+layout                  labelHeight                             float   0.1
+layout                  labelPurpose                            string  "drawing"
+graphic                 displayPinNames                         boolean t
+layout                  displayPinNames                         boolean t
+layout                  pinTextSameLayer                        boolean t
+layout                  createPinLabel                          boolean t
+layout			displayResolution			string	"Very High"
+layout			segSnapMode				string	"anyAngle"
+layout			ySnapSpacing				float	0.001
+layout			xSnapSpacing				float 	0.001
+layout			vfoShowOnlyFluidShapeForDrag		boolean t
+graphic 		maskLayoutDefaultApp			string	"Layout EXL"
+
+; Does not pop up the conn Ref window when just doing layout
+;layoutXL                openConnRef                             boolean nil
+layoutXL                 lxSchematicDefaultApp                   cyclic "None"
+layoutXL                 casGlyphs                               boolean        nil
+; Simulation (ADE) presets.
+
+spectre.envOpts		switchViewList 				string	"spectre cmos_sch cmos.sch schematic veriloga INTERCONNECT"
+
+; photonics preset
+
+photonics               modeSpecFrequencyList                   string        "1270n"
+photonics               modeSpecTemperatureList                 string        "27"
+photonics               phoAbutAutoAdjust                       boolean       t

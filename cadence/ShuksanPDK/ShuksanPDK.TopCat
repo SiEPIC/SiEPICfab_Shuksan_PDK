@@ -1,0 +1,5 @@
+TDMCHECKPOINT="1.0"
+ShuksanPDK/Active_Devices.Cat type="category"
+ShuksanPDK/Passive_Devices.Cat type="category"
+ShuksanPDK/Simulation_Primitives.Cat type="category"
+ShuksanPDK/waveguides.Cat type="category"

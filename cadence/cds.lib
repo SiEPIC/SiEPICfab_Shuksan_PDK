@@ -1,0 +1,6 @@
+# File Created by Sean Lam at Mon Nov 15 18:13:19 2021
+# assisted by CdsLibEditor
+SOFTINCLUDE $(compute:THIS_TOOL_INST_ROOT)/share/cdssetup/cds.lib
+DEFINE opticalLib $(compute:THIS_TOOL_INST_ROOT)/tools/dfII/etc/cdslib/opticalLib
+DEFINE ShuksanPDK ./ShuksanPDK
+
