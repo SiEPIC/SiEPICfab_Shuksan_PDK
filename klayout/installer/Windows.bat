@@ -39,6 +39,8 @@ if '%errorlevel%' NEQ '0' (
     CD /D "%~dp0"
 :-------------------------------------- 
 
+mkdir %userprofile%\KLayout\tech
+
 mklink /d %userprofile%\KLayout\tech\SiEPICfab_Shuksan_PDK %userprofile%\Documents\GitHub\SiEPICfab_Shuksan_PDK\klayout\siepicfab_shuksan_pdk\
 (call)
 
