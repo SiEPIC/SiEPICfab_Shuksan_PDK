@@ -16,8 +16,8 @@
 	</opt_in>
 	<tunable-laser>
 		<wavelength>1310</wavelength>
-		<wavelength-start>1270</wavelength-start>
-		<wavelength-stop>1370</wavelength-stop>
+		<wavelength-start>1260</wavelength-start>
+		<wavelength-stop>1360</wavelength-stop>
 		<wavelength-points>3000</wavelength-points>
 		<polarization>TE, TM</polarization>
 	</tunable-laser>
