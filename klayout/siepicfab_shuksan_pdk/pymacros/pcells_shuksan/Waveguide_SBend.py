@@ -15,9 +15,9 @@ class Waveguide_SBend(pya.PCellDeclarationHelper):
 
     # declare the parameters
     self.param("length", self.TypeDouble, "Waveguide length", default = 10.0)     
-    self.param("height", self.TypeDouble, "Waveguide offset height", default = 2)     
-    self.param("wg_width", self.TypeDouble, "Waveguide width (microns)", default = 0.5)     
-    self.param("radius", self.TypeDouble, "Waveguide bend radius (microns)", default = 5)     
+    self.param("height", self.TypeDouble, "Waveguide offset height", default = 2.0)     
+    self.param("wg_width", self.TypeDouble, "Waveguide width (microns)", default = 0.35)     
+    self.param("radius", self.TypeDouble, "Waveguide bend radius (microns)", default = 10.0)     
     self.param("layer", self.TypeLayer, "Layer", default = TECHNOLOGY['Si'])
     self.param("pinrec", self.TypeLayer, "PinRec Layer", default = TECHNOLOGY['PinRec'])
     self.param("devrec", self.TypeLayer, "DevRec Layer", default = TECHNOLOGY['DevRec'])
@@ -64,7 +64,7 @@ class Waveguide_SBend(pya.PCellDeclarationHelper):
     pin = Path([Point(-pin_length/2,0), Point(pin_length/2,0)], w)
     pin_t = pin.transformed(t)
     shapes(LayerPinRecN).insert(pin_t)
-    text = Text ("pin2", t)
+    text = Text ("opt2", t)
     shape = shapes(LayerPinRecN).insert(text)
     shape.text_size = 0.4/dbu
     shape.text_halign = 2
@@ -74,7 +74,7 @@ class Waveguide_SBend(pya.PCellDeclarationHelper):
     pin = Path([Point(pin_length/2,0), Point(-pin_length/2,0)], w)
     pin_t = pin.transformed(t)
     shapes(LayerPinRecN).insert(pin_t)
-    text = Text ("pin1", t)
+    text = Text ("opt1", t)
     shape = shapes(LayerPinRecN).insert(text)
     shape.text_size = 0.4/dbu
 
