@@ -1,1 +1,2 @@
-To be filled
+See https://github.com/SiEPIC/SiEPICfab_Shuksan_PDK/blob/main/cadence/ShuksanPDK_Installation_Instructions.pdf for installation instructions.
+See https://qdot-nexus.phas.ubc.ca:25683/s/toRG2JCmzywqb2N for tutorials on schematic simulations and layout.
