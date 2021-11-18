@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<lumerical_lookup_table version="1.0" name="dc_seriesrings">
+    <association>
+        <design>
+            <value name="gap" type="double">1e-07</value>
+            <value name="radius1" type="double">10e-06</value>
+            <value name="radius2" type="double">6.66667e-06</value>
+            <value name="thickness" type="double">2.2e-07</value>
+            <value name="width" type="double">5e-07</value>
+        </design>
+        <extracted>
+            <value name="s-param" type="string">dc_seriesrings_gap=100nm_radius1=10um_radius2=6.66667um_width=500nm_thickness=220nm</value>
+        </extracted>
+    </association>
+</lumerical_lookup_table>
