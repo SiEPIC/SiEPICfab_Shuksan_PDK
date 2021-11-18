@@ -18,14 +18,15 @@ class DirectionalCoupler_SeriesRings(pya.PCellDeclarationHelper):
     self.param("r2", self.TypeDouble, "Radius of Upper Ring", default = 3)
     self.param("r1", self.TypeDouble, "Radius of Lower Ring", default = 3)
     self.param("w", self.TypeDouble, "Waveguide Width", default = 0.35)
-    self.param("g", self.TypeDouble, "Gap", default = 0.15)
+    self.param("g", self.TypeDouble, "Gap", default = 0.08)
+    self.param("Lc", self.TypeDouble, "Coupling Length", default = 0)
     self.param("pinrec", self.TypeLayer, "PinRec Layer", default = TECHNOLOGY['PinRec'])
     self.param("devrec", self.TypeLayer, "DevRec Layer", default = TECHNOLOGY['DevRec'])
     self.param("textl", self.TypeLayer, "Text Layer", default = LayerInfo(10, 0))
 
   def display_text_impl(self):
     # Provide a descriptive text for the cell
-    return "DirectionalCoupler_SeriesRings(R1=" + ('%.3f' % self.r1)+ ",R2=" + ('%.3f' % self.r2) + ",g=" + ('%g' % (1000*self.g)) + ")"
+    return "DirectionalCoupler_SeriesRings(R1=" + ('%.3f' % self.r1)+ ",R2=" + ('%.3f' % self.r2) + ",g=" + ('%g' % (1000*self.g)) + ",Lc=" + ('%.3f' % self.Lc) + ")"
 
   def can_create_from_shape_impl(self):
     return False
@@ -54,7 +55,7 @@ class DirectionalCoupler_SeriesRings(pya.PCellDeclarationHelper):
     r1 = int(round( self.r1/dbu))
     r2 = int(round( self.r2/dbu))
     g = int(round( self.g/dbu))
-    Lc = int(round( 0/dbu))
+    Lc = int(round( self.Lc/dbu))
 
     # draw the half-circle
     x = 0
@@ -129,7 +130,7 @@ class DirectionalCoupler_SeriesRings(pya.PCellDeclarationHelper):
     shape.text_size =  r*0.017
     t = Trans(Trans.R0, ((r1+r2)/2)/4, ((r1+r2)/2)/2)
   #  text = Text ('Spice_param:wg_width=%.3fu gap="%s" radius="%s"'% ( w, g,int( r)), t)
-    text = Text ('Spice_param:wg_width=%.3fu gap=%.3fu radius1=%.3fu radius2=%.3fu'% ( self.w, self.g,int( self.r1), int(self.r2)), t)
+    text = Text ('Spice_param:wg_width=%.3fu gap=%.3fu  Lc=%.3fu radius1=%.3fu radius2=%.3fu'% ( self.w, self.g,self.Lc,int( self.r1), int(self.r2)), t)
     shape = shapes(LayerDevRecN).insert(text)
     shape.text_size =  r*0.017
 

@@ -1,4 +1,5 @@
-gap=1e-07;
+gap=8e-08;
+Lc=0;
 radius1=3e-06;
 radius2=3e-06;
 wg_width=3.5e-07;
@@ -10,4 +11,4 @@ setnamed("::model","radius1",radius1);
 setnamed("::model","radius2",radius2);
 setnamed("::model","si_thickness",wg_thickness);
 setnamed("::model","wg_width",wg_width);
-save("C:/Users/jeida/AppData/Roaming/Custom/SiEPICfab_Shuksan_PDK/fdtd/dc_seriesrings/dc_seriesrings_gap=100nm_radius1=3um_radius2=3um_width=350nm_thickness=220nm.fsp");dc_seriesrings_generate_s_parameters;exit(2);
+save("C:/Users/jeida/AppData/Roaming/Custom/SiEPICfab_Shuksan_PDK/fdtd/dc_seriesrings/dc_seriesrings_gap=80nm_Lc=0um_radius1=3um_radius2=3um_width=350nm_thickness=220nm.fsp");dc_seriesrings_generate_s_parameters;exit(2);
