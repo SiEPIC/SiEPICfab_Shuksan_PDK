@@ -32,8 +32,8 @@
  </properties>
 
  <properties>
-  <frame-color>#8000ff</frame-color>
-  <fill-color>#8000ff</fill-color>
+  <frame-color>#3471eb</frame-color>
+  <fill-color>#3471eb</fill-color>
   <frame-brightness>0</frame-brightness>
   <fill-brightness>0</fill-brightness>
   <dither-pattern>I0</dither-pattern>
@@ -62,8 +62,8 @@
   <source>346/0@1</source>
  </properties>
  <properties>
-  <frame-color>#0080ff</frame-color>
-  <fill-color>#0080ff</fill-color>
+  <frame-color>#ebc634</frame-color>
+  <fill-color>#ebc634</fill-color>
   <frame-brightness>0</frame-brightness>
   <fill-brightness>0</fill-brightness>
   <dither-pattern>I0</dither-pattern>
