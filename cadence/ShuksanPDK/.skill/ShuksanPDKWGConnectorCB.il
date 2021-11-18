@@ -1,18 +1,6 @@
 ;********************************************************************************
 ;*                           Connector WG CDF callback                          *
 ;*                                                                              *
-;* DISCLAIMER: The following code is provided for Cadence customers to use at   *
-;* their own risk. The code may require modification to satisfy the requirements*
-;* of any user. The code and any modifications to the code may not be compatible*
-;* with current or future versions of Cadence products.                         *
-;* THE CODE IS PROVIDED "AS IS" AND WITH NO WARRANTIES, INCLUDING WITHOUT       *
-;* LIMITATION ANY EXPRESS WARRANTIES OR IMPLIED WARRANTIES OF MERCHANTABILITY   *
-;* OR FITNESS FOR A PARTICULAR USE OR SUPPORT.                                  * 
-;*							   			*
-;* (c) 2016,2017,2018,2019 Cadence Design Systems, Inc.                         *
-;* All rights reserved worldwide.                                               *
-;*							   _			*
-;* 		                                         c a d e n c e          *
 ;********************************************************************************
 
 ;* generic field parameter callback for connectors and simple waveguides elements

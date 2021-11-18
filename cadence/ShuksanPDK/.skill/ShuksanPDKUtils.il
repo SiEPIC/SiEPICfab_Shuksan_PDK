@@ -35,7 +35,7 @@ procedure( ShuksanPDKDistance( pt1 pt2 )
        )
 
 )
-;* 20210808 - gscl - This will help with forward/backward usage of ShuksanPDK.
+;* This will help with forward/backward usage of ShuksanPDK.
 
 procedure( ShuksanPDKIsGeneratorAvailable(cv genName)
     prog( ()
