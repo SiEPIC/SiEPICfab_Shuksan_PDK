@@ -17,7 +17,7 @@ class Waveguide_SBend(pya.PCellDeclarationHelper):
     self.param("length", self.TypeDouble, "Waveguide length", default = 10.0)     
     self.param("height", self.TypeDouble, "Waveguide offset height", default = 2.0)     
     self.param("wg_width", self.TypeDouble, "Waveguide width (microns)", default = 0.35)     
-    self.param("radius", self.TypeDouble, "Waveguide bend radius (microns)", default = 10.0)     
+#    self.param("radius", self.TypeDouble, "Waveguide bend radius (microns)", default = 10.0)     
     self.param("layer", self.TypeLayer, "Layer", default = TECHNOLOGY['Si'])
     self.param("pinrec", self.TypeLayer, "PinRec Layer", default = TECHNOLOGY['PinRec'])
     self.param("devrec", self.TypeLayer, "DevRec Layer", default = TECHNOLOGY['DevRec'])
@@ -42,8 +42,6 @@ class Waveguide_SBend(pya.PCellDeclarationHelper):
     ly = self.layout
     shapes = self.cell.shapes
 
-    from SiEPIC.utils.layout import layout_waveguide_sbend
-
     LayerSi = self.layer
     LayerSiN = ly.layer(LayerSi)
     LayerPinRecN = ly.layer(self.pinrec)
@@ -51,15 +49,16 @@ class Waveguide_SBend(pya.PCellDeclarationHelper):
 
     length = self.length / dbu
     w = self.wg_width / dbu
-    r = self.radius / dbu
     h = self.height / dbu
-   
-    waveguide_length = layout_waveguide_sbend(self.cell, LayerSiN, pya.Trans(Trans.R0, 0,0), w, r, h, length)
+
+    from SiEPIC.utils.layout import layout_waveguide_sbend, layout_waveguide_sbend_bezier
+    waveguide_length = layout_waveguide_sbend_bezier(self.cell, LayerSiN, pya.Trans(), w=w*dbu, h=h*dbu, length=length*dbu) / dbu
+#    waveguide_length = layout_waveguide_sbend(self.cell, LayerSiN, pya.Trans(Trans.R0, 0,0), w, r, h, length)
     
     from SiEPIC._globals import PIN_LENGTH as pin_length
 
     # Pins on the waveguide:
-    x = waveguide_length
+    x = length
     t = Trans(Trans.R0, x,h)
     pin = Path([Point(-pin_length/2,0), Point(pin_length/2,0)], w)
     pin_t = pin.transformed(t)
@@ -100,6 +99,6 @@ class Waveguide_SBend(pya.PCellDeclarationHelper):
 #    shape.text_size = 0.1/dbu
 
     # Create the device recognition layer -- make it 1 * wg_width away from the waveguides.
-    box1 = Box(0, min(-w*3,h-w*3), waveguide_length, max(w*3,h+w*3))
+    box1 = Box(0, min(-w*3,h-w*3), length, max(w*3,h+w*3))
     shapes(LayerDevRecN).insert(box1)
     
