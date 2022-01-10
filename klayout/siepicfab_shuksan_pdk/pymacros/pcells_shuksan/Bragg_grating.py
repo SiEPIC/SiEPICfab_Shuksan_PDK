@@ -5,7 +5,7 @@ from . import *
 import pya
 from pya import *
 import math
-class Bragg_waveguide_grating(pya.PCellDeclarationHelper):
+class Bragg_grating(pya.PCellDeclarationHelper):
   """
   Input: length, width
   """
@@ -13,7 +13,7 @@ class Bragg_waveguide_grating(pya.PCellDeclarationHelper):
   def __init__(self):
 
     # Important: initialize the super class
-    super(Bragg_waveguide_grating, self).__init__()
+    super(Bragg_grating, self).__init__()
     from SiEPIC.utils import get_technology_by_name
     TECHNOLOGY = get_technology_by_name('SiEPICfab_Shuksan_PDK')
 
@@ -32,7 +32,7 @@ class Bragg_waveguide_grating(pya.PCellDeclarationHelper):
 
   def display_text_impl(self):
     # Provide a descriptive text for the cell
-    return "Bragg_waveguide_grating_%s-%.3f-%.3f-%.3f" % \
+    return "Bragg_grating_%s-%.3f-%.3f-%.3f" % \
     (self.number_of_periods, self.grating_period, self.corrugation_width, self.misalignment)
   
   def coerce_parameters_impl(self):
@@ -118,7 +118,7 @@ class Bragg_waveguide_grating(pya.PCellDeclarationHelper):
     pin = Path([Point(pin_length/2, 0), Point(-pin_length/2, 0)], w)
     pin_t = pin.transformed(t)
     shapes(LayerPinRecN).insert(pin_t)
-    text = Text ("pin1", t)
+    text = Text ("opt1", t)
     shape = shapes(LayerPinRecN).insert(text)
     shape.text_size = 0.4/dbu
 
@@ -126,7 +126,7 @@ class Bragg_waveguide_grating(pya.PCellDeclarationHelper):
     pin = Path([Point(-pin_length/2, 0), Point(pin_length/2, 0)], w)
     pin_t = pin.transformed(t)
     shapes(LayerPinRecN).insert(pin_t)
-    text = Text ("pin2", t)
+    text = Text ("opt2", t)
     shape = shapes(LayerPinRecN).insert(text)
     shape.text_size = 0.4/dbu
     shape.text_halign = 2
