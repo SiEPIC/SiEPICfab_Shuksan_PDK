@@ -21,6 +21,9 @@ class Waveguide_Straight(pya.PCellDeclarationHelper):
     self.param("layer", self.TypeLayer, "Layer", default = TECHNOLOGY['Si'])
     self.param("pinrec", self.TypeLayer, "PinRec Layer", default = TECHNOLOGY['PinRec'])
     self.param("devrec", self.TypeLayer, "DevRec Layer", default = TECHNOLOGY['DevRec'])
+    self.param("pin1_name", self.TypeString, "Name for Pin1", default = 'opt1')
+    self.param("pin2_name", self.TypeString, "Name for Pin2", default = 'opt2')
+    
   def display_text_impl(self):
     # Provide a descriptive text for the cell
     return "Waveguide_Straight_%.3f-%.3f" % (self.wg_length/1000, self.wg_width/1000)
@@ -32,6 +35,8 @@ class Waveguide_Straight(pya.PCellDeclarationHelper):
     return False
     
   def produce_impl(self):
+    import math
+  
     ly = self.layout
     LayerSiN = ly.layer(self.layer)
     LayerPinRecN = ly.layer(self.pinrec)
@@ -70,7 +75,7 @@ class Waveguide_Straight(pya.PCellDeclarationHelper):
     pin = pya.Path([Point(pin_length/2, 0), Point(-pin_length/2, 0)], w)
     pin_t = pin.transformed(t)
     shapes(LayerPinRecN).insert(pin_t)
-    text = Text ("pin1", t)
+    text = Text (self.pin1_name, t)
     shape = shapes(LayerPinRecN).insert(text)
     shape.text_size = 0.4/dbu
 
@@ -78,7 +83,7 @@ class Waveguide_Straight(pya.PCellDeclarationHelper):
     pin = pya.Path([Point(-pin_length/2, 0), Point(pin_length/2, 0)], w)
     pin_t = pin.transformed(t)
     shapes(LayerPinRecN).insert(pin_t)
-    text = Text ("pin2", t)
+    text = Text (self.pin2_name, t)
     shape = shapes(LayerPinRecN).insert(text)
     shape.text_size = 0.4/dbu
     shape.text_halign = 2
