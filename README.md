@@ -5,6 +5,7 @@
 * Documentation ([PDK](https://docs.google.com/document/d/1-JZsg_Nfs944Yq75YFgnUeDDumSKNufj8Ze5DLAEmiY/edit#))
 * Installation instructions ([KLayout and Lumerical](https://docs.google.com/document/d/1-JZsg_Nfs944Yq75YFgnUeDDumSKNufj8Ze5DLAEmiY/edit#heading=h.7u3akpl3nqb0))
 * Installation instructions ([Cadence and Lumerical](https://docs.google.com/document/d/1-JZsg_Nfs944Yq75YFgnUeDDumSKNufj8Ze5DLAEmiY/edit#heading=h.xf9wz2ialrvh))
+* IPKISS PDK ([Luceda](https://www.lucedaphotonics.com/blog/news-6/ipkiss-pdk-for-siepic-shuksan-is-now-available-26), [documentation](https://academy.lucedaphotonics.com/pdks/siepic_shuksan/index.html))
 
 [For questions and issues about the PDK, please submit an issue here.](https://github.com/SiEPIC/SiEPICfab_Shuksan_PDK/issues)
 
