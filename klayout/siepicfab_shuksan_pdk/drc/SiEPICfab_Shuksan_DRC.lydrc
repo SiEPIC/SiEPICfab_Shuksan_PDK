@@ -22,16 +22,31 @@
 
 report("SiEPICfab_Shuksan_PDK DRC")
 
-# Layers:
-LayerSi=input(1,0)
-LayerOxide_open_si = input(6,0)
-LayerM1=input(11,0)
-LayerM2=input(12,0)
-LayerMLOpen=input(13,0)
+# Hierarchical DRC sometimes doesn't catch everything. Flatten first
+flat_drc = true
 
-DevRec=input(68,0)
-PinRec=input(1,10)
-LayerFP=input(99)
+if flat_drc
+    # Layers:
+    LayerSi=input(1,0).merge
+    LayerOxide_open_si = input(6,0).merge
+    LayerM1=input(11,0).merge
+    LayerM2=input(12,0).merge
+    LayerMLOpen=input(13,0).merge
+    DevRec=input(68,0).merge
+    PinRec=input(1,10).merge
+    LayerFP=input(99).merge
+else
+    # Layers:
+    LayerSi=input(1,0)
+    LayerOxide_open_si = input(6,0)
+    LayerM1=input(11,0)
+    LayerM2=input(12,0)
+    LayerMLOpen=input(13,0)
+    DevRec=input(68,0)
+    PinRec=input(1,10)
+    LayerFP=input(99)
+end
+
 
 #################
 # non-physical checks
