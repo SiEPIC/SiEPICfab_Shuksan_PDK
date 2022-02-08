@@ -2,27 +2,15 @@
 <lumerical_lookup_table version="1.0" name="dc_seriesrings">
     <association>
         <design>
-            <value name="Lc" type="double">0</value>
-            <value name="gap" type="double">0</value>
-            <value name="radius1" type="double">0</value>
-            <value name="radius2" type="double">0</value>
-            <value name="thickness" type="double">0</value>
-            <value name="width" type="double">0</value>
-        </design>
-        <extracted>
-            <value name="s-param" type="string">dc_seriesrings_gap=0nm_radius1=0um_radius2=0um_width=0nm_thickness=0nm.dat</value>
-        </extracted>
-    </association>
-    <association>
-        <design>
-            <value name="Lc" type="double">0</value>
+            <value name="Lc" type="double">1e-06</value>
             <value name="gap" type="double">8e-08</value>
             <value name="radius1" type="double">3e-06</value>
             <value name="radius2" type="double">3e-06</value>
+            <value name="thickness" type="double">2.2000000000000004e-07</value>
             <value name="width" type="double">3.5e-07</value>
         </design>
         <extracted>
-            <value name="s-param" type="string">dc_seriesrings_gap=80nm_Lc=0um_radius1=3um_radius2=3um_width=350nm_thickness=220nm.dat</value>
+            <value name="s-param" type="string">dc_seriesrings_gap=80nm_Lc=1um_radius1=3um_radius2=3um_width=350nm_thickness=220nm.dat</value>
         </extracted>
     </association>
 </lumerical_lookup_table>
