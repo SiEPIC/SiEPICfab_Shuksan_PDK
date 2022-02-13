@@ -21,6 +21,20 @@
 	</waveguide>
 
 	<waveguide>
+	  <name>Multimode Strip TE 1310 nm, w=1000 nm</name>
+	  <CML>SiEPICfab_Shuksan_PDK</CML>
+	  <model>wg_strip_o_mm_1000</model>
+	  <bezier>0.20</bezier>
+      <radius>300.0</radius>
+      <width>1.0</width>
+	  <component>
+	    <layer>Si</layer>
+	    <width>1.0</width>
+	    <offset>0.0</offset>
+	  </component>
+	</waveguide>
+
+	<waveguide>
 	  <name>Multimode Strip TE 1310 nm, w=2000 nm</name>
 	  <CML>SiEPICfab_Shuksan_PDK</CML>
 	  <model>wg_strip_o_mm_2000</model>
@@ -34,4 +48,18 @@
 	  </component>
 	</waveguide>
 
+	<waveguide>
+	  <name>Multimode Strip TE 1310 nm, w=3000 nm</name>
+	  <CML>SiEPICfab_Shuksan_PDK</CML>
+	  <model>wg_strip_o_mm_3000</model>
+	  <bezier>0.20</bezier>
+      <radius>500.0</radius>
+      <width>3.0</width>
+	  <component>
+	    <layer>Si</layer>
+	    <width>3.0</width>
+	    <offset>0.0</offset>
+	  </component>
+	</waveguide>
+	
 </waveguides>
