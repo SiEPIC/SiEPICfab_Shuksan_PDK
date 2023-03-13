@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <klayout-macro>
- <description>Laser, MZI, Fibre Array</description>
+ <description>Laser, MZI, Fibre Array (Shuksan)</description>
  <version>0.0.1</version>
  <category>pymacros</category>
  <prolog/>
@@ -10,7 +10,7 @@
  <autorun-early>false</autorun-early>
  <shortcut/>
  <show-in-menu>true</show-in-menu>
- <group-name/>
+ <group-name>Examples_SiEPICfabShuksan</group-name>
  <menu-path>siepic_menu.exlayout.begin</menu-path>
  <interpreter>python</interpreter>
  <dsl-interpreter-name/>
